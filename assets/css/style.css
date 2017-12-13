@@ -59,6 +59,7 @@ code {
 	height: 300px;
 	border-radius: 150px;
 	background-size: 1114px;
+	margin: 0 auto;
 }
 
 .choice--opponent {
@@ -86,6 +87,7 @@ code {
 	background-image: url(../images/rps.png);
 	border-radius: 50px;
 	background-size: 362px;
+	margin: 0 auto;
 }
 
 .action a {

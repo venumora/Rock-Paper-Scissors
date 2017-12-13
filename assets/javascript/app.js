@@ -82,6 +82,7 @@ function createGame(playerId) {
 		const gameSnapVal = gameSnap.val();
 		let gameResult = null;
 		if(gameSnapVal) {
+			$('#startNew').hide();
 			if(!gameSnapVal.playerOne) {
 				if(isPlayerOne) {
 					waitingForPlayerChoice = true;
@@ -104,6 +105,7 @@ function createGame(playerId) {
 				$('#takeway').text('This Game is a Tie!!');
 				updatePic('#opponentChoice', gameSnapVal.playerOne);
 				updatePic('#playerChoice', gameSnapVal.playerOne);
+				$('#startNew').show();
 			} else if (gameSnapVal.playerOne === 'r' && gameSnapVal.playerTwo === 's' ||
 				gameSnapVal.playerOne === 'p' && gameSnapVal.playerTwo === 'r' ||
 				gameSnapVal.playerOne === 's' && gameSnapVal.playerTwo === 'p')
@@ -117,7 +119,7 @@ function createGame(playerId) {
 					updatePic('#opponentChoice', gameSnapVal.playerOne);
 					updatePic('#playerChoice', gameSnapVal.playerTwo);
 				}
-
+				$('#startNew').show();
 				updateWinsAndLoses(playerOne.playerId, true);
 				updateWinsAndLoses(playerTwo.playerId, false);
 			} else {
@@ -130,7 +132,7 @@ function createGame(playerId) {
 					updatePic('#opponentChoice', gameSnapVal.playerOne);
 					updatePic('#playerChoice', gameSnapVal.playerTwo);
 				}
-
+				$('#startNew').show();
 				updateWinsAndLoses(playerTwo.playerId, true);
 				updateWinsAndLoses(playerOne.playerId, false);
 			}
@@ -219,10 +221,6 @@ function initializeGame() {
 	}
 }
 
-function endGame() {
-	
-}
-
 $('.js-action').on('click', function(event){
 	event.preventDefault();
 	if(waitingForPlayerChoice) {
@@ -242,11 +240,6 @@ $('.js-start-game').on('click', function(event) {
 
 	event.preventDefault();
 	initializeGame();
-});
-
-$('#endGame').on('click', function(event) {
-	event.preventDefault();
-	endGame();
 });
 
 $('#resetPlayer').on('click', function(event) {
