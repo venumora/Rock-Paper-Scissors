@@ -41,41 +41,33 @@
 
 	<!-- Begin page content -->
 	<div class="container">
+		<div class="row center">
+			<div class="col-sm-4">
+				<div id="playerChoice" class="choice"></div>
+			</div>
+			<div class="col-sm-4">
+				<div class="row"><h4><span class="label label-info" id="playerName"></span></h4></div>
+				<div class="row"><h4><span class="label label-info" id="playerOpponent"></h4></div>
+				<div class="row"><h3><span class="label label-success" id="takeway"></h3></div>
+			</div>
+			<div class="col-sm-4">
+				<div  id="opponentChoice" class="choice choice--opponent"></div>
+			</div>
+		</div>
 		<div class="row">
-			<div class="col-sm-4">
-				<div class="row">
-					<div class="col-sm-10 col-sm-offset-1">
-						<div class="choice"></div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="action action--rock">
-							<a href="#" class="js-action" data-action="rock"></a>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="action action--paper">
-							<a href="#" class="js-action" data-action="paper"></a>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="action action--scissors">
-							<a href="#" class="js-action" data-action="scissors"></a>
-						</div>
-					</div>
+			<div class="col-sm-2 col-sm-offset-3">
+				<div class="action action--rock">
+					<a href="#" class="js-action" data-action="r"></a>
 				</div>
 			</div>
-			<div class="col-sm-4">
-				<div class="row" id="playerName"></div>
-				<div class="row" id="playerOpponent"></div>
-				<div class="row" id="takeway"></div>
+			<div class="col-sm-2">
+				<div class="action action--paper">
+					<a href="#" class="js-action" data-action="p"></a>
+				</div>
 			</div>
-			<div class="col-sm-4">
-				<div class="row">
-					<div class="col-sm-10 col-sm-offset-1">
-						
-					</div>
+			<div class="col-sm-2">
+				<div class="action action--scissors">
+					<a href="#" class="js-action" data-action="s"></a>
 				</div>
 			</div>
 		</div>
@@ -89,7 +81,7 @@
 						<form>
 							<div class="form-group">
 								<label for="player-name" class="control-label">Name:</label>
-								<input required type="text" class="form-control" id="player-name">
+								<input maxlength="20" required type="text" class="form-control" id="player-name">
 							</div>
 						</form>
 					</div>
