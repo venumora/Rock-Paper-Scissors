@@ -41,3 +41,53 @@ body > .container {
 code {
 	font-size: 80%;
 }
+
+.choice {
+	width: 300px;
+	height: 300px;
+	background-image: url(../images/rps.png);
+	border-radius: 150px;
+	background-size: 1114px;
+}
+
+.choice--rock {
+	background-position: -138px -238px;
+}
+
+.choice--paper {
+	background-position: -253px -34px;
+}
+
+.choice--scissors {
+	background-position: -50px -107px;
+}
+
+.action {
+	width: 100px;
+	height: 100px;
+	background-image: url(../images/rps.png);
+	border-radius: 50px;
+	background-size: 362px;
+}
+
+.action a {
+	display: block;
+	height: 100%;
+}
+
+.action:hover,
+.action:focus {
+	transform: scale(1.2);
+}
+
+.action--rock {
+	background-position: -138px -238px;
+}
+
+.action--paper {
+	background-position: -253px -34px;
+}
+
+.action--scissors {
+	background-position: -16px -34px;
+}

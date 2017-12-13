@@ -132,4 +132,4 @@ $('#resetPlayer').on('click', function(event) {
 	initializeGame();
 });
 
-initializeGame();
+// initializeGame();
