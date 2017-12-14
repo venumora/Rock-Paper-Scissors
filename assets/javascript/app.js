@@ -263,7 +263,7 @@
 	}
 
 	function sendMessage(message) {
-		if (currentSession) {
+		if (currentSession && playerOne && playerTwo) {
 			const chatRef = database.ref(`sessions/${currentSession.key}/chat`);
 			const chat = {};
 			chat.message = message;

@@ -60,6 +60,7 @@ code {
 	border-radius: 150px;
 	background-size: 1114px;
 	margin: 0 auto;
+	background-color: rebeccapurple;
 }
 
 .choice--opponent {
@@ -156,6 +157,7 @@ code {
 .list-group-item {
 	background: transparent;
 	border: none;
+	padding: 5px;
 }
 
 .msg {
