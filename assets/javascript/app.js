@@ -21,7 +21,6 @@
 	currentGame = null,
 	isPlayerOne = false, 
 	waitingForPlayerChoice = false;
-
 	let currentSession = null;
 
 	function createPlayer() {
@@ -118,86 +117,89 @@
 
 
 	function watchGame(playerId) {
-		currentGame.on('value', function(gameSnap) {
-			const gameSnapVal = gameSnap.val();
-			let gameResult = null;
+		if (currentGame) {
+			currentGame.off();
+			currentGame.on('value', function(gameSnap) {
+				const gameSnapVal = gameSnap.val();
+				let gameResult = null;
 
-			if(gameSnapVal && gameSnapVal.status === 'terminated') {
-				localStorage.setItem('rpsData', JSON.stringify({playerId: isPlayerOne ? playerOne.playerId : playerTwo.playerId}));
-				waitingForPlayerChoice = false;
-				setTimeout(initializeGame, 5000);
-				return;
-			}
-
-			if(gameSnapVal && gameSnapVal.status !== 'ended') {
-				$('#playerChoice').removeClass('loader').removeClass('loader--spin');
-				$('#opponentChoice').removeClass('loader').removeClass('loader--spin');
-				if(!gameSnapVal.playerOne) {
-					if(isPlayerOne) {
-						currentSession.once('value', function(exSession) {
-							const exSessionVal = exSession.val();
-							if (exSessionVal) {
-								playerOne = exSessionVal.playerOne;
-								playerTwo = exSessionVal.playerTwo;
-								waitingForPlayerChoice = playerTwo ? true : false;
-								$('#takeway').text(`Waiting for You to select choice.`);
-								$('#playerChoice').addClass('loader').addClass('loader--spin');
-							}
-						});
-					} else {
-						waitingForPlayerChoice = false;
-						$('#takeway').text(`Waiting for ${playerOne.playerName} to select choice.`);
-						$('#opponentChoice').addClass('loader').addClass('loader--spin');
-					}
-				} else if (!gameSnapVal.playerTwo) {
-					if(isPlayerOne) {
-						waitingForPlayerChoice = false;
-						$('#takeway').text(`Waiting for ${playerTwo.playerName} to select choice.`);
-						updatePic('#playerChoice', gameSnapVal.playerOne);
-						$('#opponentChoice').addClass('loader').addClass('loader--spin');
-					} else {
-						waitingForPlayerChoice = true;
-						$('#takeway').text(`Waiting for You to select choice.`);
-						updatePic('#playerChoice', gameSnapVal.playerTwo);
-						$('#playerChoice').addClass('loader').addClass('loader--spin');
-					}
-				} else if (gameSnapVal.playerOne === gameSnapVal.playerTwo) {
-					$('#takeway').text('This Game is a Tie!!');
-					updatePic('#opponentChoice', gameSnapVal.playerOne);
-					updatePic('#playerChoice', gameSnapVal.playerOne);
-					updateWinsAndLoses();
-				} else if (gameSnapVal.playerOne === 'r' && gameSnapVal.playerTwo === 's' ||
-					gameSnapVal.playerOne === 'p' && gameSnapVal.playerTwo === 'r' ||
-					gameSnapVal.playerOne === 's' && gameSnapVal.playerTwo === 'p')
-				{
-					if(isPlayerOne) {
-						$('#takeway').text(`You won the game!!`);
-						updatePic('#opponentChoice', gameSnapVal.playerTwo);
-						updatePic('#playerChoice', gameSnapVal.playerOne);
-					} else {
-						$('#takeway').text(`${playerOne.playerName} won the game!!`);
-						updatePic('#opponentChoice', gameSnapVal.playerOne);
-						updatePic('#playerChoice', gameSnapVal.playerTwo);
-					}
-					updateWinsAndLoses(playerOne.playerId, true);
-					updateWinsAndLoses(playerTwo.playerId, false);
-				} else {
-					if(isPlayerOne) {
-						$('#takeway').text(`${playerTwo.playerName} won the game!!`);
-						updatePic('#opponentChoice', gameSnapVal.playerTwo);
-						updatePic('#playerChoice', gameSnapVal.playerOne);
-					} else {
-						$('#takeway').text(`You won the game!!`);
-						updatePic('#opponentChoice', gameSnapVal.playerOne);
-						updatePic('#playerChoice', gameSnapVal.playerTwo);
-					}
-					updateWinsAndLoses(playerTwo.playerId, true);
-					updateWinsAndLoses(playerOne.playerId, false);
+				if(gameSnapVal && gameSnapVal.status === 'terminated') {
+					localStorage.setItem('rpsData', JSON.stringify({playerId: isPlayerOne ? playerOne.playerId : playerTwo.playerId}));
+					waitingForPlayerChoice = false;
+					setTimeout(initializeGame, 5000);
+					return;
 				}
-			}
 
-			localStorage.setItem('rpsData', JSON.stringify({playerId: playerId, sessionId: currentSession.key, gameId: gameSnap.key}));
-		});
+				if(gameSnapVal && gameSnapVal.status !== 'ended') {
+					$('#playerChoice').removeClass('loader').removeClass('loader--spin');
+					$('#opponentChoice').removeClass('loader').removeClass('loader--spin');
+					if(!gameSnapVal.playerOne) {
+						if(isPlayerOne) {
+							currentSession.once('value', function(exSession) {
+								const exSessionVal = exSession.val();
+								if (exSessionVal) {
+									playerOne = exSessionVal.playerOne;
+									playerTwo = exSessionVal.playerTwo;
+									waitingForPlayerChoice = playerTwo ? true : false;
+									$('#takeway').text(`Waiting for You to select choice.`);
+									$('#playerChoice').addClass('loader').addClass('loader--spin');
+								}
+							});
+						} else {
+							waitingForPlayerChoice = false;
+							$('#takeway').text(`Waiting for ${playerOne.playerName} to select choice.`);
+							$('#opponentChoice').addClass('loader').addClass('loader--spin');
+						}
+					} else if (!gameSnapVal.playerTwo) {
+						if(isPlayerOne) {
+							waitingForPlayerChoice = false;
+							$('#takeway').text(`Waiting for ${playerTwo.playerName} to select choice.`);
+							updatePic('#playerChoice', gameSnapVal.playerOne);
+							$('#opponentChoice').addClass('loader').addClass('loader--spin');
+						} else {
+							waitingForPlayerChoice = true;
+							$('#takeway').text(`Waiting for You to select choice.`);
+							updatePic('#playerChoice', gameSnapVal.playerTwo);
+							$('#playerChoice').addClass('loader').addClass('loader--spin');
+						}
+					} else if (gameSnapVal.playerOne === gameSnapVal.playerTwo) {
+						$('#takeway').text('This Game is a Tie!!');
+						updatePic('#opponentChoice', gameSnapVal.playerOne);
+						updatePic('#playerChoice', gameSnapVal.playerOne);
+						updateWinsAndLoses();
+					} else if (gameSnapVal.playerOne === 'r' && gameSnapVal.playerTwo === 's' ||
+						gameSnapVal.playerOne === 'p' && gameSnapVal.playerTwo === 'r' ||
+						gameSnapVal.playerOne === 's' && gameSnapVal.playerTwo === 'p')
+					{
+						if(isPlayerOne) {
+							$('#takeway').text(`You won the game!!`);
+							updatePic('#opponentChoice', gameSnapVal.playerTwo);
+							updatePic('#playerChoice', gameSnapVal.playerOne);
+						} else {
+							$('#takeway').text(`${playerOne.playerName} won the game!!`);
+							updatePic('#opponentChoice', gameSnapVal.playerOne);
+							updatePic('#playerChoice', gameSnapVal.playerTwo);
+						}
+						updateWinsAndLoses(playerOne.playerId, true);
+						updateWinsAndLoses(playerTwo.playerId, false);
+					} else {
+						if(isPlayerOne) {
+							$('#takeway').text(`${playerTwo.playerName} won the game!!`);
+							updatePic('#opponentChoice', gameSnapVal.playerTwo);
+							updatePic('#playerChoice', gameSnapVal.playerOne);
+						} else {
+							$('#takeway').text(`You won the game!!`);
+							updatePic('#opponentChoice', gameSnapVal.playerOne);
+							updatePic('#playerChoice', gameSnapVal.playerTwo);
+						}
+						updateWinsAndLoses(playerTwo.playerId, true);
+						updateWinsAndLoses(playerOne.playerId, false);
+					}
+				}
+
+				localStorage.setItem('rpsData', JSON.stringify({playerId: playerId, sessionId: currentSession.key, gameId: gameSnap.key}));
+			});
+		}
 	}
 
 	function updatePic(playerEle, action) {
@@ -283,6 +285,7 @@
 	function watchChat() {
 		if (currentSession) {
 			const chatRef = database.ref(`sessions/${currentSession.key}/chat`);
+			chatRef.off();
 			chatRef.on('child_added', function(chatSnap) {
 				let messageItem = $('<li class="list-group-item">');
 				let messageCont = $('<div class="msg">');
