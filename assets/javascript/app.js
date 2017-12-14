@@ -56,7 +56,7 @@
 							}
 						});
 						playerOne = exSessionVal.playerOne;
-						playerTwo = { playerId: playerVal.playerId, playerName: playerVal.playerName };
+						playerTwo = { playerId: playerSnap.key, playerName: playerVal.playerName };
 						$('#playerName').text(`Hi ${playerVal.playerName}!!`);
 						$('#playerOpponent').text(`Your opponent is ${exSessionVal.playerOne.playerName}!!`);
 					} else if (exSessionVal.playerTwo) {
@@ -110,10 +110,12 @@
 					updatePic('#playerChoice');
 					currentGame = database.ref(`sessions/${currentSession.key}/games/${addedGame.key}`);
 					watchGame(playerId);
+					watchChat();
 				}
 			});
 		});
 	}
+
 
 	function watchGame(playerId) {
 		currentGame.on('value', function(gameSnap) {
@@ -260,6 +262,43 @@
 		});
 	}
 
+	function sendMessage(message) {
+		if (currentSession) {
+			const chatRef = database.ref(`sessions/${currentSession.key}/chat`);
+			const chat = {};
+			chat.message = message;
+			chat.playerId = isPlayerOne ? playerOne.playerId : playerTwo.playerId;
+			chatRef.push(chat);
+		}
+	}
+
+	function watchChat() {
+		if (currentSession) {
+			const chatRef = database.ref(`sessions/${currentSession.key}/chat`);
+			chatRef.on('child_added', function(chatSnap) {
+				let messageItem = $('<li class="list-group-item">');
+				let messageCont = $('<div class="msg">');
+				const chatSnapVal = chatSnap.val();
+				messageCont.text(chatSnapVal.message);
+				if(isPlayerOne) {
+					if(chatSnapVal.playerId === playerOne.playerId) {
+						messageCont.addClass('msg--right');
+					} else {
+						messageCont.addClass('msg--left');
+					}
+				} else {
+					if(chatSnapVal.playerId === playerTwo.playerId) {
+						messageCont.addClass('msg--right');
+					} else {
+						messageCont.addClass('msg--left');
+					}
+				}
+				messageItem.append(messageCont);
+				$('#messages').append(messageItem);
+			});
+		}
+	}
+
 	function initializeGame() {
 		rpsData = localStorage.getItem('rpsData');
 		$('#takeway').text('Waiting for You to Join');
@@ -304,7 +343,7 @@
 		}
 	});
 
-	$('.js-start-game').on('click', function(event) {
+	$('#playerDetails').on('submit', function(event) {
 		const playerName = $('#player-name').val().trim();
 		if(!playerName) {
 			return false;
@@ -318,6 +357,17 @@
 		event.preventDefault();
 		localStorage.removeItem('rpsData');
 		initializeGame();
+	});
+
+	$('#chatForm').on('submit', function(event){
+		const message = $('#message').val().trim();
+
+		if(!message) {
+			return false;
+		}
+		event.preventDefault();
+		sendMessage(message);
+		$('#message').val('');
 	});
 
 	initializeGame();

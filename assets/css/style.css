@@ -137,3 +137,47 @@ code {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }
+
+.container .jumbotron {
+	padding: 10px;
+	min-height: 100px;
+	max-height: 300px;
+	overflow-y: auto;
+	margin-bottom: 0px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.form-control--flat-top {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.list-group-item {
+	background: transparent;
+	border: none;
+}
+
+.msg {
+	border-radius: 20px;
+	color: #FFF;
+	padding: 10px;
+}
+
+.list-group-item::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+.msg--left {
+	float: left;
+	background-color: #a94442;
+	border-top-left-radius: 0px;	
+}
+
+.msg--right {
+	float: right;
+	border-bottom-right-radius: 0px;	
+	background-color: #3c763d;
+}

@@ -53,20 +53,35 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-2 col-sm-offset-3">
+			<div class="col-sm-2 col-xs-4 col-sm-offset-3">
 				<div class="action action--rock">
 					<a href="#" class="js-action" data-action="r"></a>
 				</div>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-2 col-xs-4">
 				<div class="action action--paper">
 					<a href="#" class="js-action" data-action="p"></a>
 				</div>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-2 col-xs-4">
 				<div class="action action--scissors">
 					<a href="#" class="js-action" data-action="s"></a>
 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3">
+				<form id="chatForm">
+					<div class="jumbotron">
+						<ul class="list-group" id="messages"></ul>
+					</div>
+					<div class="input-group">
+				      <input type="text" id="message" class="form-control form-control--flat-top">
+				      <span class="input-group-btn">
+				        <button class="btn btn-default form-control--flat-top" type="submit"><span class="glyphicon glyphicon-send"></span></button>
+				      </span>
+				    </div>
+				</form>
 			</div>
 		</div>
 		<div class="modal fade" id="userData" tabindex="-1" role="dialog">
@@ -76,16 +91,17 @@
 						<h4 class="modal-title">Please enter details to continue</h4>
 					</div>
 					<div class="modal-body">
-						<form>
-							<div class="form-group">
-								<label for="player-name" class="control-label">Name:</label>
-								<input maxlength="20" required type="text" class="form-control" id="player-name">
-							</div>
+						<form id="playerDetails">
+							<div class="input-group">
+								<input  maxlength="20" required type="text" class="form-control" id="player-name" placeholder="What is your Name!">
+								<span class="input-group-btn">
+									<button class="btn btn-default" role='submit' type="submit"><span class="glyphicon glyphicon-play"></span></button>
+								</span>
+								<span class="input-group-btn">
+									<button class="btn btn-default" role='close' data-dismiss="modal" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+								</span>
+						    </div>
 						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" role='submit' class="btn btn-primary js-start-game">Start Game</button>
 					</div>
 				</div>
 			</div>
