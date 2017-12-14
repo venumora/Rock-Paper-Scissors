@@ -121,6 +121,14 @@
 		currentGame.on('value', function(gameSnap) {
 			const gameSnapVal = gameSnap.val();
 			let gameResult = null;
+
+			if(gameSnapVal && gameSnapVal.status === 'terminated') {
+				localStorage.setItem('rpsData', JSON.stringify({playerId: isPlayerOne ? playerOne.playerId : playerTwo.playerId}));
+				waitingForPlayerChoice = false;
+				setTimeout(initializeGame, 5000);
+				return;
+			}
+
 			if(gameSnapVal && gameSnapVal.status !== 'ended') {
 				$('#playerChoice').removeClass('loader').removeClass('loader--spin');
 				$('#opponentChoice').removeClass('loader').removeClass('loader--spin');
@@ -295,6 +303,7 @@
 				}
 				messageItem.append(messageCont);
 				$('#messages').append(messageItem);
+				$('.jumbotron').scrollTop(500);
 			});
 		}
 	}
@@ -370,5 +379,18 @@
 		$('#message').val('');
 	});
 
+	$(window).bind("beforeunload", function() {
+		updateGameStaus('terminated');
+		localStorage.removeItem('rpsData');
+		const session = database.ref(`sessions/${currentSession.key}`);
+		session.update({isVacant: false});
+		const player = isPlayerOne ? playerOne : playerTwo;
+		if(player) {
+			sendMessage(`${player.playerName} let the game!!`);
+		}
+	});
+
 	initializeGame();
+
+
 })();
