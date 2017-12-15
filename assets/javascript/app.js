@@ -109,12 +109,34 @@
 					updatePic('#playerChoice');
 					currentGame = database.ref(`sessions/${currentSession.key}/games/${addedGame.key}`);
 					watchGame(playerId);
+					watchPlayers();
 					watchChat();
 				}
 			});
 		});
 	}
 
+	function updatePlayerScore(player, playerEle, playerMessage) {
+		if(player) {
+			const playerRef = database.ref(`players/${player.playerId}`);
+			playerRef.off();
+			playerRef.on('value', function(playerSnap) {
+				const playerSnapVal = playerSnap.val();
+				$(playerEle).text(`${playerMessage} WINS - ${parseInt(playerOne.wins || 0)} 
+					LOSES - ${parseInt(playerOne.loses || 0)}`);
+			});
+		}
+	}
+
+	function watchPlayers() {
+		if(isPlayerOne) {
+			updatePlayerScore(playerOne, '#playerChoiceHistory', 'Your score card:');
+			updatePlayerScore(playerTwo, '#opponentChoiceHistory', 'Your opponents score card:');
+		} else {
+			updatePlayerScore(playerTwo, '#playerChoiceHistory', 'Your score card:');
+			updatePlayerScore(playerOne, '#opponentChoiceHistory', 'Your opponents score card:');
+		}
+	}
 
 	function watchGame(playerId) {
 		if (currentGame) {
@@ -384,12 +406,12 @@
 
 	$(window).bind("beforeunload", function() {
 		updateGameStaus('terminated');
-		localStorage.removeItem('rpsData');
 		const session = database.ref(`sessions/${currentSession.key}`);
 		session.update({isVacant: false});
 		const player = isPlayerOne ? playerOne : playerTwo;
 		if(player) {
-			sendMessage(`${player.playerName} let the game!!`);
+			localStorage.setItem('rpsData', JSON.stringify({playerId: player.playerId}));
+			sendMessage(`${player.playerName} left the game!!`);
 		}
 	});
 
