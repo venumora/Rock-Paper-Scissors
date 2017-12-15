@@ -122,8 +122,8 @@
 			playerRef.off();
 			playerRef.on('value', function(playerSnap) {
 				const playerSnapVal = playerSnap.val();
-				$(playerEle).text(`${playerMessage} WINS - ${parseInt(playerOne.wins || 0)} 
-					LOSSES - ${parseInt(playerOne.loses || 0)}`);
+				$(playerEle).text(`${playerMessage} WINS - ${parseInt(playerSnapVal.wins || 0)} 
+					LOSSES - ${parseInt(playerSnapVal.loses || 0)}`);
 			});
 		}
 	}
@@ -197,25 +197,25 @@
 							$('#takeway').text(`You won the game!!`);
 							updatePic('#opponentChoice', gameSnapVal.playerTwo);
 							updatePic('#playerChoice', gameSnapVal.playerOne);
+							updateWinsAndLoses(playerOne.playerId, true);
 						} else {
 							$('#takeway').text(`${playerOne.playerName} won the game!!`);
 							updatePic('#opponentChoice', gameSnapVal.playerOne);
 							updatePic('#playerChoice', gameSnapVal.playerTwo);
+							updateWinsAndLoses(playerTwo.playerId, false);
 						}
-						updateWinsAndLoses(playerOne.playerId, true);
-						updateWinsAndLoses(playerTwo.playerId, false);
 					} else {
 						if(isPlayerOne) {
 							$('#takeway').text(`${playerTwo.playerName} won the game!!`);
 							updatePic('#opponentChoice', gameSnapVal.playerTwo);
 							updatePic('#playerChoice', gameSnapVal.playerOne);
+							updateWinsAndLoses(playerOne.playerId, false);
 						} else {
 							$('#takeway').text(`You won the game!!`);
 							updatePic('#opponentChoice', gameSnapVal.playerOne);
 							updatePic('#playerChoice', gameSnapVal.playerTwo);
+							updateWinsAndLoses(playerTwo.playerId, true);
 						}
-						updateWinsAndLoses(playerTwo.playerId, true);
-						updateWinsAndLoses(playerOne.playerId, false);
 					}
 				}
 
@@ -288,6 +288,9 @@
 						createGame(playerId);
 						$('#playerName').text(`Hi ${playerOne.playerName}!!`);
 						$('#takeway').text('Waiting for other player to Join');
+					} else {
+						localStorage.removeItem('rpsData');
+						initializeGame();
 					}
 				});
 			}
@@ -410,7 +413,6 @@
 		session.update({isVacant: false});
 		const player = isPlayerOne ? playerOne : playerTwo;
 		if(player) {
-			localStorage.setItem('rpsData', JSON.stringify({playerId: player.playerId}));
 			sendMessage(`${player.playerName} left the game!!`);
 		}
 	});
