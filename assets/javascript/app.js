@@ -56,14 +56,16 @@
 						});
 						playerOne = exSessionVal.playerOne;
 						playerTwo = { playerId: playerSnap.key, playerName: playerVal.playerName };
-						$('#playerName').text(`Hi ${playerVal.playerName}!!`);
-						$('#playerOpponent').text(`Your opponent is ${exSessionVal.playerOne.playerName}!!`);
+						$('#playerName').text(`Hi ${playerVal.playerName} !!`);
+						$('#playerOpponent').text(`Your opponent is ${exSessionVal.playerOne.playerName} !!`);
+						sendMessage(`${playerOne.playerName} joined the game !!`);
 					} else if (exSessionVal.playerTwo) {
 						isPlayerOne = true;
 						playerOne = exSessionVal.playerOne;
 						playerTwo = exSessionVal.playerTwo;
-						$('#playerName').text(`Hi ${playerOne.playerName}!!`);
-						$('#playerOpponent').text(`Your opponent is ${playerTwo.playerName}!!`);
+						$('#playerName').text(`Hi ${playerOne.playerName} !!`);
+						$('#playerOpponent').text(`Your opponent is ${playerTwo.playerName} !!`);
+						sendMessage(`${playerTwo.playerName} joined the game !!`);
 					}
 
 					createGame(playerId, exSessionVal.activeGame);
@@ -185,7 +187,7 @@
 							$('#playerChoice').addClass('loader').addClass('loader--spin');
 						}
 					} else if (gameSnapVal.playerOne === gameSnapVal.playerTwo) {
-						$('#takeway').text('This Game is a Tie!!');
+						$('#takeway').text('This Game is a Tie !!');
 						updatePic('#opponentChoice', gameSnapVal.playerOne);
 						updatePic('#playerChoice', gameSnapVal.playerOne);
 						updateWinsAndLoses();
@@ -194,24 +196,24 @@
 						gameSnapVal.playerOne === 's' && gameSnapVal.playerTwo === 'p')
 					{
 						if(isPlayerOne) {
-							$('#takeway').text(`You won the game!!`);
+							$('#takeway').text(`You won the game !!`);
 							updatePic('#opponentChoice', gameSnapVal.playerTwo);
 							updatePic('#playerChoice', gameSnapVal.playerOne);
 							updateWinsAndLoses(playerOne.playerId, true);
 						} else {
-							$('#takeway').text(`${playerOne.playerName} won the game!!`);
+							$('#takeway').text(`${playerOne.playerName} won the game !!`);
 							updatePic('#opponentChoice', gameSnapVal.playerOne);
 							updatePic('#playerChoice', gameSnapVal.playerTwo);
 							updateWinsAndLoses(playerTwo.playerId, false);
 						}
 					} else {
 						if(isPlayerOne) {
-							$('#takeway').text(`${playerTwo.playerName} won the game!!`);
+							$('#takeway').text(`${playerTwo.playerName} won the game !!`);
 							updatePic('#opponentChoice', gameSnapVal.playerTwo);
 							updatePic('#playerChoice', gameSnapVal.playerOne);
 							updateWinsAndLoses(playerOne.playerId, false);
 						} else {
-							$('#takeway').text(`You won the game!!`);
+							$('#takeway').text(`You won the game !!`);
 							updatePic('#opponentChoice', gameSnapVal.playerOne);
 							updatePic('#playerChoice', gameSnapVal.playerTwo);
 							updateWinsAndLoses(playerTwo.playerId, true);
@@ -247,6 +249,7 @@
 						const wins = playerSnapVal.wins || 0;
 						playerRef.update({wins: wins + 1});
 						updateGameStaus('ended', playerId);
+						sendMessage(`${playerSnapVal.playerName} Won the game  !!`);
 					} else {
 						const loses = playerSnapVal.loses || 0;
 						playerRef.update({loses: loses + 1});
@@ -286,7 +289,7 @@
 						};
 						currentSession = sessions.push(session);
 						createGame(playerId);
-						$('#playerName').text(`Hi ${playerOne.playerName}!!`);
+						$('#playerName').text(`Hi ${playerOne.playerName} !!`);
 						$('#takeway').text('Waiting for other player to Join');
 					} else {
 						localStorage.removeItem('rpsData');
@@ -298,7 +301,7 @@
 	}
 
 	function sendMessage(message) {
-		if (currentSession && playerOne && playerTwo) {
+		if (currentSession) {
 			const chatRef = database.ref(`sessions/${currentSession.key}/chat`);
 			const chat = {};
 			chat.message = message;
@@ -413,7 +416,7 @@
 		session.update({isVacant: false});
 		const player = isPlayerOne ? playerOne : playerTwo;
 		if(player) {
-			sendMessage(`${player.playerName} left the game!!`);
+			sendMessage(`${player.playerName} left the game !!`);
 		}
 	});
 	initializeGame();
