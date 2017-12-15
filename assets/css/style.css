@@ -55,10 +55,10 @@ code {
 }
 
 .choice {
-	width: 300px;
-	height: 300px;
+	width: 150px;
+	height: 150px;
 	border-radius: 150px;
-	background-size: 1114px;
+	background-size: 551px;
 	margin: 0 auto;
 	background-color: rebeccapurple;
 }
@@ -69,17 +69,17 @@ code {
 
 .choice--rock {
 	background-image: url(../images/rps.png);
-	background-position: -425px -735px;
+	background-position: 342px -362px
 }
 
 .choice--paper {
 	background-image: url(../images/rps.png);
-	background-position: -782px -107px;
+	background-position: 717px -52px
 }
 
 .choice--scissors {
 	background-image: url(../images/rps.png);
-	background-position: -50px -107px;
+	background-position: -23px -52px
 }
 
 .action {
@@ -118,8 +118,8 @@ code {
 	border: 16px solid #f3f3f3;
 	border-radius: 50%;
 	border-top: 16px solid #3498db;
-	width: 300px;
-	height: 300px;
+	width: 150px;
+	height: 150px;
 	background: none;
 }
 

@@ -414,8 +414,5 @@
 			sendMessage(`${player.playerName} left the game!!`);
 		}
 	});
-
 	initializeGame();
-
-
 })();
