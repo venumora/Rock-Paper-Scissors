@@ -123,7 +123,7 @@
 			playerRef.on('value', function(playerSnap) {
 				const playerSnapVal = playerSnap.val();
 				$(playerEle).text(`${playerMessage} WINS - ${parseInt(playerOne.wins || 0)} 
-					LOSES - ${parseInt(playerOne.loses || 0)}`);
+					LOSSES - ${parseInt(playerOne.loses || 0)}`);
 			});
 		}
 	}
