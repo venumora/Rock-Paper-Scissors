@@ -148,7 +148,6 @@
 				let gameResult = null;
 
 				if(gameSnapVal && gameSnapVal.status === 'terminated') {
-					localStorage.setItem('rpsData', JSON.stringify({playerId: isPlayerOne ? playerOne.playerId : playerTwo.playerId}));
 					waitingForPlayerChoice = false;
 					setTimeout(initializeGame, 5000);
 					return;
